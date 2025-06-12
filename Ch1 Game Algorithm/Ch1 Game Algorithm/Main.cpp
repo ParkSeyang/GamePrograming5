@@ -45,7 +45,6 @@ struct Monster
 		prev_x = x;
 		prev_y = y;
 		step = 0;
-
 	}
 
 };
