@@ -133,41 +133,32 @@ int main()
 		{
 			monsters.emplace_back(sx, sy, path);
 		}
-	}
-
-
-	GoToXY(sx, sy);
-	std::cout << "◎";
-
-	// direction 숫자를 받아와서 GoToXY의 좌표를 변경해보세요.
-
-	int pre_x = sx;
-	int pre_y = sy;
-
-	for (int i = 0; i < monsters.size(); i++)
-	{
-		Monster& monster = monsters[i];
-		// 잔상이 남는 현상을 해결해보세요. system("cls");
-		// pre_x, pre_y;  이전 위치 값을 저장하고, 이전 위치를 빈 공간으로 그리는 코드
-		// std::cout << "  ";
-		if (monster.step >= monster.direction.size())
+		for (int i = 0; i < monsters.size(); i++)
 		{
-			continue;
+			Monster& monster = monsters[i];
+			// 잔상이 남는 현상을 해결해보세요. system("cls");
+			// pre_x, pre_y;  이전 위치 값을 저장하고, 이전 위치를 빈 공간으로 그리는 코드
+			// std::cout << "  ";
+			if (monster.step >= monster.direction.size())
+			{
+				continue;
+			}
+			GoToXY(monster.prev_x, monster.prev_y);
+			std::cout << "  ";
+
+			int dir = monster.direction[monster.step];
+			monster.x += dx[dir];
+			monster.y += dy[dir];
+			monster.prev_x = sx;
+			monster.prev_y = sy;
+			monster.step++;
+
+
+			GoToXY(monster.x, monster.y);
+			std::cout << "◎";
+			Sleep(500);
+
 		}
-		GoToXY(monster.prev_x,monster.prev_y);
-		std::cout << "  ";
-
-		int dir = monster.direction[monster.step];
-		monster.x += dx[dir];
-		monster.y += dy[dir];
-		monster.prev_x = sx;
-		monster.prev_y = sy;
-		monster.step++;
-
-
-		GoToXY(monster.x, monster.y);
-		std::cout << "◎";
-		Sleep(500);
 
 	}
 
@@ -182,7 +173,7 @@ int main()
 
 #pragma endregion
 
-// 2. 여러가지 몬스터가 각자의 방햐응로 움직이는 코드를 작성 해보세요.
+// 2. 여러가지 몬스터가 각 방향로 움직이는 코드를 작성 해보세요.
 
 // 3. 맵에 따라서 도착 지점을 자동으로 찾아주는 코드를 작성하기(길찾기 문제 DFS, BFS)
 
