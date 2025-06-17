@@ -138,7 +138,7 @@ void quickSort(int data[], int start, int end)
             temp = data[right];
             data[right] = data[pivot];
             data[pivot] = temp;
-            std::swap(data[pivot], data[right]);
+           // std::swap(data[pivot], data[right]);
         }
         else
         {
@@ -201,7 +201,7 @@ int main()
 
     quickSort(arr3, 0, 9);
 
-    for (int i = 0; i < arr3[9]; i++)
+    for (int i = 0; i < 10; i++)
     {
         std::cout << arr3[i] << " ";
     }
