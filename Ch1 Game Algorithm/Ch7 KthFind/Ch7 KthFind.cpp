@@ -29,7 +29,7 @@ void EmergencyExample()
     
     for (int i = 0; i < people.size(); i++)
     {
-        sheets.insert({ i, people[i] });
+        sheets.insert({ people[i], i });  // 위급도 key, 인덱스 second (value)
     }
 
     // people 값을 정렬
@@ -56,7 +56,8 @@ void EmergencyExample()
 
     for (int i = 0; i < people.size(); i++)
     {
-        int key = sheets.find(people[people.size() - 1 - i])->first;
+        auto it = sheets.find(people[people.size() - 1 - i]);
+        int index = it->second;
         answer[key] = i + 1;
     }
 

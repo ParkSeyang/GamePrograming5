@@ -103,6 +103,7 @@ public:
 
 		//  L -> R -> N
 	}
+
 };
 
 #pragma endregion
@@ -217,18 +218,22 @@ private:
 			// if (node->leftNode == nullptr && node->rightNode == nullptr)
 			// if (node->leftNode == nullptr)
 			// if (node->rightNode == nullptr)
+
 			if (node->leftNode == nullptr || node->rightNode == nullptr)
 			{
 				Node* temp = node->leftNode != nullptr ? node->leftNode : node->rightNode;  // 왼쪽, 오른쪽 체크
 
 				if (temp == nullptr)  // 자식노드가 없는 경우
 				{
-					temp = node;
-					node = nullptr;
+					temp = node;      // 지우고 싶은 노드를 임시로 저장 (지워야할 메모리를 가리키고 있다.)
+					node = nullptr;   // 지우고 싶은 노드를 null가리키도록 수정.
+					delete temp;      // 임시 보관한 주소를 지워라.
 				}
 				else
 				{
-					node = temp;
+					Node* nodeToDelete = node;  // 지울 노드를 잠시 저장할 변수를 선언.
+					node = temp;                // 1개만 있는 자식(temp)을 지워야할 노드(node)위치로 이동
+					delete nodeToDelete;        // 지워야할 노드(nodeToDelete) - 메모리를 해제한다.
 				}
 
 			}
@@ -282,6 +287,10 @@ public:
 		root = deleteNode(root, value);
 	}
 
+	void ReturnRoot()
+	{
+		std::cout << ""
+	}
 };
 
 #pragma endregion
