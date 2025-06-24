@@ -69,7 +69,7 @@ private:
 		
 		// node-> parentNode가 없을때
 
-		while (node > node->parentNode && !node->parentNode) // 변경을 하기 위한 조건
+		while (node->parentNode != nullptr && node->value > node->parentNode->value) // 변경을 하기 위한 조건
 		{
 			// 알고리즘 헤더를 추가해준다음에, 부모 노드와 자기 노드를 스왑해준다. (value를 swap)
 			// 스왑후에 노드를 부모노드와 변경해준다. (부모 노드를 가리키고 있는 것을 변경한다.)
@@ -94,7 +94,7 @@ private:
 
 		while (!q.empty())
 		{
-			Node* lastNode = q.front();
+			lastNode = q.front();
 			q.pop();
 			if (lastNode->leftNode)
 			{
@@ -231,7 +231,7 @@ public:
 
 		if (!lastNode)
 		{
-			return -1;    // if(-1) 갯수가 0, (-2) 마지막 노드를 찾는 코드가 에러가 있습니다.
+			return -2;    // if(-1) 갯수가 0, (-2) 마지막 노드를 찾는 코드가 에러가 있습니다.
 		}
 		 
 		// 2. 마지막 노드를 root 노드로 이동시킨 후 다시 heap의 성질을 갖도록 정의하세요.
@@ -259,30 +259,45 @@ public:
 
 		return maxValue;
 	}
+
+	std::vector<int> toArray()
+	{
+		std::vector<int> result;
+
+		// 힙으로 저장한 자료구조를 vector로 변환해보세요.
+
+		// while queue자료형을 사용해서 데이터를 탐색하는 형태의 코드
+
+		if (!root) // root가 nullptr이면?
+		{
+			return result; // 예외처리
+		}
+
+		std::queue<Node*> q;
+
+		q.push(root);  
+
+		while (!q.empty())
+		{
+			Node* node = q.front();
+			q.pop();
+
+			result.push_back(node->value);
+
+			if (node->leftNode)
+			{
+				q.push(node->leftNode);
+			}
+			if (node->rightNode)
+			{
+				q.push(node->rightNode);
+			}
+			
+		}
+
+		return result;
+	}
 };
-
-/*
-* RPG게임 보스 레이드, 5인파티, (전사, 도적, 궁수, 마법사, 성직자)
-* 각각의 직업들은 스킬을 사용할 때 마다 보스 어그로가 증가합니다.
-* 총 5번의 보스 공격 마다 누구를 우선적으로 공격하는지 찾는 로직을 작성해보세요.
-* 이때, 보스가 특정 직업을 공격할 때 마다 그 직업의 어그로는 0으로 초기화됩니다.
-*           1턴  2턴  3턴   4턴  5턴
-* 전사   :  10    5    8     7    6 ( 강력하거나, 위협적인 스킬일 수록 그 수치가 높다)
-* 도적   :
-* 궁수   :
-* 마법사 :
-* 성직자 :
-* 
-* [보스의 스킬을 결정하는 로직]
-* 보스 : 파티 안에서 누가 가장 위협적인가?, 누가 가장 덜위협적인가?
-* 
-* (1) n개의 직업 마다 우선순위를 비교 가장 큰 순위를 출력한다.
-* (2) Heap 자료구조를 사용해서 k번째 순위를 찾는다.
-* 
-* - 갯수가 적으면 적을수록 1번 방식이 효율적이다.
-* - 2번을 사용해야하는 보스가 찾아야할 우선 순위 대상이 많으면 많을수록 2번 방식이 효율적이다.
-*/
-
 
 int main()
 {
@@ -294,18 +309,27 @@ int main()
 	mheap.Insert(3);
 	mheap.Insert(5);
 	mheap.Insert(11);
-	mheap.Insert(9);
+
+	std::cout << "Heap 자료구조의 트리 저장 순서대로 출력하는 예제" << std::endl;
+	std::vector<int> tempV = mheap.toArray();
+
+	for (auto& data : tempV )
+	{
+		std::cout << data << " ";
+	}
 
 	std::cout << "가장 큰수를 반환하고 다시 Heap 정렬 하는 예제" << std::endl;
 
 	int maxValue = mheap.extractMax(); // 1번째 큰수
-
+	int k = 2;     // 2번째로 큰 수
 	int kthValue;
 
-	for (int i = 0; i < 2; i++)
+	for (int i = 0; i < k - 1; i++)
 	{
 		kthValue = mheap.extractMax();  // 2번째로 큰 수를 kthValue에 저장한다.
 	}
 
 	// k번째로 큰 수를 찾아라.
+	std::cout << "k번째로 큰 수는 : " << kthValue << std::endl;
+
 }
