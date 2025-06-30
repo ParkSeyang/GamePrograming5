@@ -217,7 +217,7 @@ private:
 		}
 	}
 
-	void DrawLine(vector<vector<char>>& screen, int x1, int x2, int y1, int y2)  // 정수 사이의 픽셀 선을 그리는 알고리즘 Bresenham
+	void DrawLine(vector<vector<char>>& screen, int x1, int y1, int x2, int y2)  // 정수 사이의 픽셀 선을 그리는 알고리즘 Bresenham
 	{
 		int dx = abs(x2 - x1);
 		int	dy = abs(y2 - y1);
@@ -281,8 +281,9 @@ private:
 			{
 				cout << screen[y][x];
 			}
+			cout << endl;
 		}
-
+		cout << endl;
 
 	}
 
