@@ -173,14 +173,15 @@ private:
 					}
 					
 				}
+				if (!nextLevel.empty())
+				{
+					levels.push_back(nextLevel);
+				}
+
+				currentLevel++; // 다음 층을 계산하세요.
 			}
 
-			if (!nextLevel.empty())
-			{
-				levels.push_back(nextLevel);
-			}
-
-			currentLevel++; // 다음 층을 계산하세요.
+			
 		}
 
 		// 모든 층의 레벨을 계산을 했으면, 각 노드가 몇 층에 있고, 몇 번째에 있는지 기록이 됩니다.
