@@ -283,6 +283,6 @@ void ThreatSystem()
 
 int main()
 {
-	// FindKthExample();
+	FindKthExample();
 	ThreatSystem();
 }
