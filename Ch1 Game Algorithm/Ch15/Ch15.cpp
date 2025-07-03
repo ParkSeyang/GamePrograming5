@@ -201,13 +201,20 @@ public:
         return maxWeight >= currentWeight + addItem.GetWeight();
     }
 
-    int findOptionalItemCombination(int targetweight, std::vector<ItemW>& selectableItems)
+    /*
+    * 1. 선택한 아이템 들 중에서 가장 큰 가치, 실제로 선택된 아이템들 (자료구조)
+    * -> 반환값을 pair <T1, T2>
+    */
+
+    std::pair<int,std::vector<ItemW>> findOptionalItemCombination(int targetweight, std::vector<ItemW>& selectableItems)
     {
         // 현재 아이템의 무게에 새로운 아이템 조합을 가져올 때 그 아이템을 저장할 컨테이너 선언
         std::vector<int> dp(targetweight + 1, 0);
 
         // selectableItems 에 들어있는 무게. weight
         // selectableItems 에 들어있는 가치. value
+
+        std::vector<std::vector<bool>> selected(selectableItems.size(), std::vector<bool>(targetweight + 1, false));
 
         for (int i = 0; i < selectableItems.size(); i++)
         {
@@ -217,13 +224,32 @@ public:
             for (int w = targetweight; w >= weight; w--)
             {
                 // 해당 코드를 위의 알고리즘 코드를 작성해보세요.
+                if (dp[w - weight] + value > dp[w])  // 새로 들어온 아이템 + 기존 무게  전체 무게보다 클 때만
+                {
+                    dp[w] = dp[w - weight] + value;
+                    selected[i][w] = true;
+                }
+                
             }
         }
         
         // 계산한 최적의 조합을 역산해서 다시 vector에 저장하는 코드.
         // while(weight - 무게)
 
-        return dp[targetweight];
+        std::vector<ItemW> bestItems;
+
+        int w = targetweight;
+
+        for (int i = selectableItems.size() - 1; i >= 0 && w > 0; i--)
+        {
+            if (selected[i][w])
+            {
+                bestItems.push_back(selectableItems[i]);
+                w -= selectableItems[i].GetWeight();
+            }
+        }
+
+        return std::make_pair(dp[targetweight],bestItems );
 
     }
 
@@ -246,10 +272,31 @@ void InventoryWeightSystem()
 
     std::vector<ItemW> selectableTable{ A,B,C,D };
 
-    std::cout << "주어진 아이템의 최대 가치 : " <<inventory.findOptionalItemCombination(7, selectableTable) << std::endl;
+    std::pair<int, std::vector<ItemW>>Bestitems = inventory.findOptionalItemCombination(7, selectableTable);
 
-    inventory.AddItem(A);
-    inventory.AddItem(B);
+    std::cout << "주어진 아이템의 최대 가치 : " << Bestitems.first << std::endl;
+
+    std::vector<ItemW> ItemC = Bestitems.second;
+    
+    int i = 0;
+
+
+    // 개인과제
+    // 인벤토리에 아이템을 넣는 코드를 최선의 아이템을 인벤토리에 추가하도록 수정해보세요.
+    // inventory.AddItem(A);
+    // inventory.AddItem(B);
+
+
+    for (auto& item : ItemC)
+    {
+        i++;
+        std::cout << i << "번째 아이템의 이름 : "<< item.GetName() << ", 무게 : " << item.GetWeight() << ", 가치 : " << item.GetValue() << std::endl;;
+
+        // 유저가 허락 했을때 실행하세요. if(유저 입력 코드) _getch()
+        inventory.AddItem(item);
+    }
+
+   // std::cout << "주어진 아이템의 최대 가치 : " <<inventory.findOptionalItemCombination(7, selectableTable) << std::endl;
 
     int index = 0;
 
@@ -257,6 +304,7 @@ void InventoryWeightSystem()
     {
         index++;
         std::cout<< index << "번째 아이템 :" << item.GetName()<< " , 무게 : " << item.GetWeight() << std::endl;
+        
     }
 
 
@@ -267,6 +315,7 @@ int main()
 {
     Solve1();
     Solve2();
+    InventoryWeightSystem();
 }
 
 
